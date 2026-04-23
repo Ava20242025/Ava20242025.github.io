@@ -1,13 +1,11 @@
-
 name: Math Solver Workflow
 on: [push, workflow_dispatch]
 
 jobs:
   solve-math:
     runs-on: ubuntu-latest
-    # This gives the robot permission to write files back to your folder
     permissions:
-      contents: write
+      contents: write # Gives the robot the 'pen' to write in your folder
       
     steps:
       - name: Check out code
@@ -24,10 +22,11 @@ jobs:
       - name: Run Math Script
         run: python math_solver.py
 
-      - name: Save photo to folder
+      - name: Commit and Push Diagram
         run: |
-          git config --global user.name "MathBot"
-          git config --global user.email "bot@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add diagram.png
-          git commit -m "Robot added the math diagram"
+          # This next line prevents error if the photo hasn't changed
+          git commit -m "Updated math diagram" || echo "No changes to commit"
           git push
