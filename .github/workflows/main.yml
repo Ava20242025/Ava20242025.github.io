@@ -1,0 +1,17 @@
+name: Math Solver Workflow
+on: [push] # This means "Run every time I upload code"
+
+jobs:
+  solve-math:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out my code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run my Math Script
+        run: python math_solver.py # This runs your specific math code
