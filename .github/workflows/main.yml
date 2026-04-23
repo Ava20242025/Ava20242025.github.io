@@ -1,11 +1,11 @@
 name: Math Solver Workflow
-on: [push] # This means "Run every time I upload code"
+on: [push, workflow_dispatch] # workflow_dispatch adds a manual "Run" button!
 
 jobs:
   solve-math:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out my code
+      - name: Check out code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -13,5 +13,14 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install Libraries
+        run: pip install matplotlib # THIS IS THE MISSING STEP
+
       - name: Run my Math Script
-        run: python math_solver.py # This runs your specific math code
+        run: python math_solver.py
+
+      - name: Save the Diagram
+        uses: actions/upload-artifact@v4
+        with:
+          name: math-diagram
+          path: diagram.png
