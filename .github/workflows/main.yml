@@ -1,9 +1,14 @@
+
 name: Math Solver Workflow
-on: [push, workflow_dispatch] # workflow_dispatch adds a manual "Run" button!
+on: [push, workflow_dispatch]
 
 jobs:
   solve-math:
     runs-on: ubuntu-latest
+    # This gives the robot permission to write files back to your folder
+    permissions:
+      contents: write
+      
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -14,13 +19,15 @@ jobs:
           python-version: '3.9'
 
       - name: Install Libraries
-        run: pip install matplotlib # THIS IS THE MISSING STEP
+        run: pip install matplotlib
 
-      - name: Run my Math Script
+      - name: Run Math Script
         run: python math_solver.py
 
-      - name: Save the Diagram
-        uses: actions/upload-artifact@v4
-        with:
-          name: math-diagram
-          path: diagram.png
+      - name: Save photo to folder
+        run: |
+          git config --global user.name "MathBot"
+          git config --global user.email "bot@github.com"
+          git add diagram.png
+          git commit -m "Robot added the math diagram"
+          git push
